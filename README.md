@@ -1,6 +1,12 @@
 # variantsearch
 
 - a unified async web-enabled platform for variant search.
+- **Note:** Please see the last commit for the final release else it is a development version.
+
+```
+ git clone https://github.com/IBCHgenomic/variantsearch.git
+```
+
 - Acknowledgements: MOSAIC platform, developed as part of the ECBiG-MOSAIC project (POIR.04.02.00-00-D017/20), co-financed by the European Regional Development Fund (ERDF) under the Smart Growth Operational Programme 2014-2020, Measure 4.2 for the development of modern research infrastructure in the science sector.
 - Project PI and Informal queries: Prof. Luiza Handschuh: luizahan@ibch.poznan.pl.
 - Code related queries: Dr. Gaurav Sablok: gsablok@ibch.poznan.pl.

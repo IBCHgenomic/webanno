@@ -1,4 +1,4 @@
-# variantsearch
+# webanno
 
 - a unified async web-enabled platform for variant search.
 - **Note:** Please see the last commit for the final release else it is a development version.

@@ -52,3 +52,15 @@ export interface MapPubMed {
           pmidpubmed: string,
 
 }
+
+/*
+  interface for the OMIM class
+*/
+
+export interface OMIMMap {
+          cbigeneid: string | number
+          genesymbol: string
+          association: string
+          diseaseid: string | number
+          source: string
+}

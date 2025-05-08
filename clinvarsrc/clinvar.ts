@@ -11,7 +11,7 @@
 */
 
 export interface Allele {
-          Allelid: string
+          Allelid: string,
           Clndisdb: string,
           Clndn: string,
           Clnhgvs: string,
@@ -25,7 +25,7 @@ export interface Allele {
           Rsid: string,
 }
 
-class Clinvar {
+export class Clinvar {
           chrom: string
           pos: string
           id: string

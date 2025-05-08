@@ -10,10 +10,10 @@
 calling all the HTML and the innerHTML interfaces here.
 */
 
-import { hpomapfunction } from "./hpomapinterface";
-import { omiminterfacefunction } from "./medgenhpointerface";
-import { readmedgenfunction } from "./medgenidmappings";
-import { mappubmedfunction } from "./medgenmappubmed";
+import { hpomapfunction } from "./medgensrc/hpomapinterface";
+import { omiminterfacefunction } from "./medgensrc/medgenhpointerface";
+import { readmedgenfunction } from "./medgensrc/medgenidmappings";
+import { mappubmedfunction } from "./medgensrc/medgenmappubmed";
 
 import
           function main() {

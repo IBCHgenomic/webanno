@@ -6,16 +6,19 @@
  Date: 2025-5-7
 */
 
-import * as fs from "fs";
-import * as ds from "readline";
-import { MapInterface } from "./interfaces";
+/*
+change to node js programming
+*/
 
-function omiminterface(pathfile: string): MapInterface[] {
-          const fileread = ds.createInterface(fs.readFileSync(pathfile));
-          let medgeninterface: MapInterface[] = new Array();
-          fileread.on("line", (l: string) => {
-                    let linesplit = Array.from(l.split('|'));
-                    let newmedgen: MapInterface = {
+import { MedGenHPOInterface } from "./interfaces";
+import * as fsPromise from 'fs/promises';
+
+export async function omiminterfacefunction(pathfile: string): Promise<MedGenHPOInterface[]> {
+          const fileread = await fsPromise.open(pathfile, 'r');
+          let medgeninterface: MedGenHPOInterface[] = new Array();
+          for await (const line of fileread.readLines()) {
+                    let linesplit = Array.from(line.split('|'));
+                    let newmedgen: MedGenHPOInterface = {
                               cui: linesplit[0],
                               sdui: linesplit[1],
                               hpostr: linesplit[2],

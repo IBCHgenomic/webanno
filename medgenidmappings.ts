@@ -6,15 +6,18 @@
  Date: 2025-5-7
 */
 
-import * as fs from "fs";
-import * as ds from "readline";
+/*
+converted to nodejs programming
+*/
+
+import * as fsPromise from 'fs/promises';
 import { Medgen } from "./interfaces";
 
-function readmedgen(pathfile: string): Medgen[] {
-          const fileread = ds.createInterface(fs.readFileSync(pathfile));
+export async function readmedgenfunction(pathfile: string): Promise<Medgen[]> {
+          const fileread = await fsPromise.open(pathfile, 'r');
           let medgeninterface: Medgen[] = new Array();
-          fileread.on("line", (l: string) => {
-                    let linesplit = l.split("|");
+          for await (const line of fileread.readLines()) {
+                    let linesplit = line.split("|");
                     let append: Medgen = {
                               id: linesplit[0],
                               name: linesplit[1],
@@ -22,6 +25,6 @@ function readmedgen(pathfile: string): Medgen[] {
                               source: linesplit[3],
                     };
                     medgeninterface.push(append);
-          });
+          };
           return medgeninterface;
 }

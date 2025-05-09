@@ -27,7 +27,7 @@ export interface MaxoAnnotate {
 	sourceid: string;
 	maxoid: string;
 	maxoname: string;
-	hpoid: string | number;
+	hpoid: number;
 	relation: string;
 	evidence: string;
 	extensionid: string;

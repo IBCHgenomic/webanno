@@ -31,7 +31,7 @@ class MergeAnnotate {
 		sourceid: string,
 		maxoid: string,
 		maxoname: string,
-		hpoid: string,
+		hpoid: number,
 		relation: string,
 		evidence: string,
 		extensionid: string,
@@ -41,8 +41,8 @@ class MergeAnnotate {
 		author: string,
 		lastupdated: string,
 		created: string,
-	){
-	this.diseaseid = diseaseid,
+	) {
+		this.diseaseid = diseaseid,
 	this.diseasename = diseasename,
 	this.sourceid = sourceid,
 	this.maxoid = maxoid,
@@ -62,24 +62,44 @@ class MergeAnnotate {
 
 class MaxoMerge extends MergeAnnotate {
 	filename: string;
-	super(diseaseid: string,
-	diseasename: string,
-	sourceid: string,
-	maxoid: string,
-	maxoname: string,
-	hpoid: string | number,
-	relation: string,
-	evidence: string,
-	extensionid: string,
-	extensionname: string,
-	comment: string,
-	other: string,
-	author: string,
-	lastupdated: string,
-	created: string);
-	constructor(filename: string) {
+	constructor(
+		diseaseid: string,
+		diseasename: string,
+		sourceid: string,
+		maxoid: string,
+		maxoname: string,
+		hpoid: number,
+		relation: string,
+		evidence: string,
+		extensionid: string,
+		extensionname: string,
+		comment: string,
+		other: string,
+		author: string,
+		lastupdated: string,
+		created: string,
+		filename: string,
+	) {
+		super(
+			diseaseid,
+			diseasename,
+			sourceid,
+			maxoid,
+			maxoname,
+			hpoid,
+			relation,
+			evidence,
+			extensionid,
+			extensionname,
+			comment,
+			other,
+			author,
+			lastupdated,
+			created,
+		);
 		this.filename = filename;
 	}
+
 	async resolvefilename(fileiter: string): Promise<MaxoAnnotate[]> {
 		const fileread = await fsPromise.open(fileiter, "r");
 		const maxoannotate: MaxoAnnotate[] = new Array();
@@ -90,7 +110,7 @@ class MaxoMerge extends MergeAnnotate {
 			const sourceidinsert = linesplit[2];
 			const maxoidinsert = linesplit[3];
 			const maxonameinsert = linesplit[4];
-			const hpoidinsert = linesplit[5];
+			const hpoidinsert = Number.parseInt(linesplit[5]);
 			const relationinsert = linesplit[6];
 			const evidenceinsert = linesplit[7];
 			const extensionidinsert = linesplit[8];

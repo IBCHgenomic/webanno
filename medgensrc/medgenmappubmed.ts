@@ -10,21 +10,23 @@
 converted to nodejs programming
 */
 
-import * as fsPromise from 'fs/promises';
-import { MapPubMed } from "./interfaces";
+import * as fsPromise from "fs/promises";
+import type { MapPubMed } from "./interfaces";
 
-export async function mappubmedfunction(pathfile: string): Promise<MapPubMed[]> {
-          const fileread = await fsPromise.open(pathfile, 'r');
-          let mappubmedinterface: MapPubMed[] = new Array();
-          for await (const line of fileread.readLines()) {
-                    let linesplit = line.split("|");
-                    let append: MapPubMed = {
-                              uidpubmed: linesplit[0],
-                              cuipubmed: linesplit[1],
-                              namepubmed: linesplit[2],
-                              pmidpubmed: linesplit[3],
-                    };
-                    mappubmedinterface.push(append);
-          };
-          return mappubmedinterface;
+export async function mappubmedfunction(
+	pathfile: string,
+): Promise<MapPubMed[]> {
+	const fileread = await fsPromise.open(pathfile, "r");
+	const mappubmedinterface: MapPubMed[] = new Array();
+	for await (const line of fileread.readLines()) {
+		const linesplit = line.split("|");
+		const append: MapPubMed = {
+			uidpubmed: linesplit[0],
+			cuipubmed: linesplit[1],
+			namepubmed: linesplit[2],
+			pmidpubmed: linesplit[3],
+		};
+		mappubmedinterface.push(append);
+	}
+	return mappubmedinterface;
 }

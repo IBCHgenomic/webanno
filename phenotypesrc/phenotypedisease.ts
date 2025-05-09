@@ -9,8 +9,74 @@
 import * as fsPromise from "fs/promises";
 import type { MaxoAnnotate } from "./phenotype";
 
-class Phenotype {
+class MergeAnnotate {
+	diseaseid: string;
+	diseasename: string;
+	sourceid: string;
+	maxoid: string;
+	maxoname: string;
+	hpoid: string | number;
+	relation: string;
+	evidence: string;
+	extensionid: string;
+	extensionname: string;
+	comment: string;
+	other: string;
+	author: string;
+	lastupdated: string;
+	created: string;
+	constructor(
+		diseaseid: string,
+		diseasename: string,
+		sourceid: string,
+		maxoid: string,
+		maxoname: string,
+		hpoid: string,
+		relation: string,
+		evidence: string,
+		extensionid: string,
+		extensionname: string,
+		comment: string,
+		other: string,
+		author: string,
+		lastupdated: string,
+		created: string,
+	){
+	this.diseaseid = diseaseid,
+	this.diseasename = diseasename,
+	this.sourceid = sourceid,
+	this.maxoid = maxoid,
+	this.maxoname = maxoname,
+	this.hpoid = hpoid,
+	this.relation = relation,
+	this.evidence = evidence,
+	this.extensionid = extensionid,
+	this.extensionname = extensionname,
+	this.comment = comment,
+	this.other = other,
+	this.author = author,
+	this.lastupdated = lastupdated,
+	this.created = created,
+	}
+}
+
+class MaxoMerge extends MergeAnnotate {
 	filename: string;
+	super(diseaseid: string,
+	diseasename: string,
+	sourceid: string,
+	maxoid: string,
+	maxoname: string,
+	hpoid: string | number,
+	relation: string,
+	evidence: string,
+	extensionid: string,
+	extensionname: string,
+	comment: string,
+	other: string,
+	author: string,
+	lastupdated: string,
+	created: string);
 	constructor(filename: string) {
 		this.filename = filename;
 	}
@@ -59,9 +125,10 @@ class Phenotype {
 	/*
            introducing handlebar templating language here
 	*/
-	async hpoidcompare(hpoid: string): string {
+	async hpoidcompare(hpoid: string): Promise<string> {
 		if (Number.parseInt(hpoid) === this.hpoid) {
 			return `this.diseaseid + "|" + "this.diseasename" + "|" + this.sourceid + "|" + this.maxoid + "|" + this.maxoname + "|" + this.hpoid + "|" + this.relation + "|" +  this.evidence + "|" + this.extensionid + "|" + this.extensionname this.comment + "|" + this.other + "|" + this.author + "|" + this.lastupdated + "|" + this.created`;
 		}
+		return `this.diseaseid + "|" + "this.diseasename" + "|" + this.sourceid + "|" + this.maxoid + "|" + this.maxoname + "|" + this.hpoid + "|" + this.relation + "|" +  this.evidence + "|" + this.extensionid + "|" + this.extensionname this.comment + "|" + this.other + "|" + this.author + "|" + this.lastupdated + "|" + this.created`;
 	}
 }

@@ -10,21 +10,21 @@
 converted to nodejs programming
 */
 
-import * as fsPromise from 'fs/promises';
-import { Medgen } from "./interfaces";
+import * as fsPromise from "fs/promises";
+import type { Medgen } from "./interfaces";
 
 export async function readmedgenfunction(pathfile: string): Promise<Medgen[]> {
-          const fileread = await fsPromise.open(pathfile, 'r');
-          let medgeninterface: Medgen[] = new Array();
-          for await (const line of fileread.readLines()) {
-                    let linesplit = line.split("|");
-                    let append: Medgen = {
-                              id: linesplit[0],
-                              name: linesplit[1],
-                              sourceid: linesplit[2],
-                              source: linesplit[3],
-                    };
-                    medgeninterface.push(append);
-          };
-          return medgeninterface;
+	const fileread = await fsPromise.open(pathfile, "r");
+	const medgeninterface: Medgen[] = new Array();
+	for await (const line of fileread.readLines()) {
+		const linesplit = line.split("|");
+		const append: Medgen = {
+			id: linesplit[0],
+			name: linesplit[1],
+			sourceid: linesplit[2],
+			source: linesplit[3],
+		};
+		medgeninterface.push(append);
+	}
+	return medgeninterface;
 }

@@ -38,3 +38,29 @@ export interface MaxoAnnotate {
 	lastupdated: string;
 	created: string;
 }
+
+export interface PhenotypeGenes {
+	hpoid: number;
+	hponame: string;
+	ncbigeneid: string;
+	genesymbol: string;
+	diseaseid: string;
+}
+
+export type GenesPhenotype = {
+	ncbigeneid: string | number;
+	genesymbol: string;
+	hpoid: number;
+	hponame: string;
+	frequency: string;
+	diseaseid: string | number;
+};
+
+export type CombinedPhenotypeGenes = {
+	hpoid: number;
+	hponame: string;
+	ncbigeneid: string | number;
+	genesymbol: string;
+	diseaseid: string | number;
+	frequency: string;
+};

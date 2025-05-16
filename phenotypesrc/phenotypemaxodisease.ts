@@ -9,7 +9,7 @@
 import * as fsPromise from "fs/promises";
 import type { MaxoAnnotate } from "./phenotype";
 
-class MergeAnnotate {
+export class MergeAnnotate {
 	diseaseid: string;
 	diseasename: string;
 	sourceid: string;
@@ -60,7 +60,7 @@ class MergeAnnotate {
 	}
 }
 
-class MaxoMerge extends MergeAnnotate {
+export class MaxoMerge extends MergeAnnotate {
 	filename: string;
 	constructor(
 		diseaseid: string,

@@ -10,7 +10,7 @@ export interface Phenotypehpoa {
 	databaseid: string;
 	diseasename: string;
 	qualifier: string;
-	hpoid: string;
+	hpoid: number;
 	reference: string;
 	evidence: string;
 	onset: string;
@@ -64,3 +64,24 @@ export type CombinedPhenotypeGenes = {
 	diseaseid: string | number;
 	frequency: string;
 };
+
+export type Combinedlastinfertace {
+    // Phenotype
+   	databaseid: string;
+	diseasename: string;
+	qualifier: string;
+	reference: string;
+	evidence: string;
+	onset: string;
+	sex: string;
+	modifier: string;
+	aspect: string;
+	biocuration: string;
+	// Combined
+	hpoid: number;
+	hponame: string;
+	ncbigeneid: string | number;
+	genesymbol: string;
+	diseaseid: string | number;
+	frequency: string;
+}

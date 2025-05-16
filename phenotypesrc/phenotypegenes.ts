@@ -11,16 +11,21 @@ import type { PhenotypeGenes } from "./phenotype";
 import type { Phenotypehpoa } from "./phenotype";
 import type { GenesPhenotype } from "./phenotype";
 import type { CombinedPhenotypeGenes } from "./phenotype";
+import { Combinedlastinfertace } from "./phenotype";
+import { Phenotype } from "./phenotypehpoa";
 
-class PhenotypeAnalysis {
+export class PhenotypeAnalysis {
 	public filename_phenotype_genes: string;
 	public filename_genes_phenotype: string;
+	public filename_genes_hpoa: string;
 	constructor(
 		filename_phenotype_genes: string,
 		filename_genes_phenotype: string,
+		filename_genes_hpoa: string,
 	) {
 		this.filename_phenotype_genes = filename_phenotype_genes;
 		this.filename_genes_phenotype = filename_genes_phenotype;
+		this.filename_genes_hpoa = filename_genes_hpoa;
 	}
 	async analyze(pathfile: string): Promise<PhenotypeGenes[]> {
 		const fileread = await fsPromise.open(pathfile, "r");
@@ -61,7 +66,7 @@ class PhenotypeAnalysis {
  writing a merged class with a return interface array.
 */
 
-class Compararative extends PhenotypeAnalysis {
+export class Comparative extends PhenotypeAnalysis {
 	async comparative(
 		input1: Array<PhenotypeGenes>,
 		input2: Array<GenesPhenotype>,
@@ -85,5 +90,48 @@ class Compararative extends PhenotypeAnalysis {
 			}
 		}
 		return returnvector;
+	}
+}
+/*
+ invoking a method call as a constructor class and a method calling
+ a callback function from aother clas to make
+ it easier rather than reimporting.
+*/
+export class HPOA extends Comparative {
+	async getjunctionvariants(
+		value1: Phenotype[],
+		value2: CombinedPhenotypeGenes[],
+	): Promise<Combinedlastinterface> {
+		const valuephenotype = new Phenotype(this.filename_genes_hpoa);
+		const valuecombined = new this.comparative(
+			this.analyze(this.filename_phenotype_genes),
+			this.analyzeother(this.filename_genes_phenotype),
+		);
+		const returnfinal: CombinedPhenotypeGenes = new Array();
+		for (i in valuephenotype) {
+			for (val in valuecombined) {
+				if (i.hpoid === val.hpoid) {
+					const objectreturn = {
+						databaseid: i.databaseid,
+						diseasename: i.diseasename,
+						qualifier: i.qualifier,
+						reference: i.reference,
+						evidence: i.evidence,
+						onset: i.onset,
+						sex: i.sex,
+						modifier: i.modifier,
+						aspect: i.aspect,
+						biocuration: i.biocuration,
+						hpoid: val.hpoid,
+						hponame: val.hponame,
+						ncbigene: val.ncbigene,
+						genesymbol: val.genesymbol,
+						diseaseid: val.diseaseid,
+						frequency: val.frequency,
+					};
+				}
+			}
+		}
+		return returnfinal;
 	}
 }

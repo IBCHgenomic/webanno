@@ -6,10 +6,10 @@
  Date: 2025-5-9
 */
 
-import type { Phenotypehpoa } from "./phenotype";
 import * as fsPromise from "fs/promises";
+import type { Phenotypehpoa } from "./phenotype";
 
-class Phenotype {
+export class Phenotype {
 	filename: string;
 	constructor(filename: string) {
 		this.filename = filename;
@@ -22,7 +22,7 @@ class Phenotype {
 			const databaseidinsert = linesplit[0];
 			const diseasenameinsert = linesplit[1];
 			const qualifierinsert = linesplit[2];
-			const hpoidinsert = linesplit[3];
+			const hpoidinsert = Number.parseInt(linesplit[3].split(":")[1]);
 			const referenceinsert = linesplit[4];
 			const evidenceinsert = linesplit[5];
 			const onsetinsert = linesplit[6];

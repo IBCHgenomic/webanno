@@ -100,8 +100,8 @@ export class MaxoMerge extends MergeAnnotate {
 		this.filename = filename;
 	}
 
-	async resolvefilename(fileiter: string): Promise<MaxoAnnotate[]> {
-		const fileread = await fsPromise.open(fileiter, "r");
+	public async resolvefilename(): Promise<MaxoAnnotate[]> {
+		const fileread = await fsPromise.open(this.filename, "r");
 		const maxoannotate: MaxoAnnotate[] = new Array();
 		for await (const line of fileread.readLines()) {
 			const linesplit = line.split("\t");
@@ -142,10 +142,7 @@ export class MaxoMerge extends MergeAnnotate {
 		return maxoannotate;
 	}
 
-	/*
-           introducing handlebar templating language here
-	*/
-	async hpoidcompare(hpoid: string): Promise<string> {
+	public async hpoidcompare(hpoid: string): Promise<string> {
 		if (Number.parseInt(hpoid) === this.hpoid) {
 			return `this.diseaseid + "|" + "this.diseasename" + "|" + this.sourceid + "|" + this.maxoid + "|" + this.maxoname + "|" + this.hpoid + "|" + this.relation + "|" +  this.evidence + "|" + this.extensionid + "|" + this.extensionname this.comment + "|" + this.other + "|" + this.author + "|" + this.lastupdated + "|" + this.created`;
 		}

@@ -8,27 +8,30 @@
 
 import * as fsPromise from "fs/promises";
 import type { PhenotypeGenes } from "./phenotype";
-import type { Phenotypehpoa } from "./phenotype";
 import type { GenesPhenotype } from "./phenotype";
 import type { CombinedPhenotypeGenes } from "./phenotype";
-import { Combinedlastinfertace } from "./phenotype";
-import { Phenotype } from "./phenotypehpoa";
+import type { Combinedlastinterface } from "./phenotype";
+import { PhenotypeHPOA } from "./phenotypehpoa";
 
-export class PhenotypeAnalysis {
+export class PhenotypeAnalysis extends PhenotypeHPOA {
 	public filename_phenotype_genes: string;
 	public filename_genes_phenotype: string;
 	public filename_genes_hpoa: string;
+
 	constructor(
+		filename: string,
 		filename_phenotype_genes: string,
 		filename_genes_phenotype: string,
 		filename_genes_hpoa: string,
 	) {
+		super(filename);
 		this.filename_phenotype_genes = filename_phenotype_genes;
 		this.filename_genes_phenotype = filename_genes_phenotype;
 		this.filename_genes_hpoa = filename_genes_hpoa;
 	}
-	async analyze(pathfile: string): Promise<PhenotypeGenes[]> {
-		const fileread = await fsPromise.open(pathfile, "r");
+
+	public async analyze(): Promise<PhenotypeGenes[]> {
+		const fileread = await fsPromise.open(this.filename_phenotype_genes, "r");
 		const phenotypegenes: PhenotypeGenes[] = new Array();
 		for await (const line of fileread.readLines()) {
 			const linesplit = Array.from(line.split("\t"));
@@ -39,13 +42,14 @@ export class PhenotypeAnalysis {
 				genesymbol: linesplit[3],
 				diseaseid: linesplit[4].split(":")[1],
 			};
-			phenotypegenes.push(objectline);
+			phenotypegenes.push(...[objectline]);
 		}
 		return phenotypegenes;
 	}
-	async analyzeother(pathfile: string): Promise<GenesPhenotype[]> {
-		const fileread = await fsPromise.open(pathfile, "r");
-		const genespheotype: GenesPhenotype[] = new Array();
+
+	public async analyzeother(): Promise<GenesPhenotype[]> {
+		const fileread = await fsPromise.open(this.filename_genes_phenotype, "r");
+		const genesphenotype: GenesPhenotype[] = new Array();
 		for await (const line of fileread.readLines()) {
 			const linesplit = Array.from(line.split("\t"));
 			const genesobject = {
@@ -56,34 +60,26 @@ export class PhenotypeAnalysis {
 				frequency: linesplit[4],
 				diseaseid: Number.parseInt(linesplit[5]),
 			};
-			genespheotype.push(genesobject);
+			genesphenotype.push(...[genesobject]);
 		}
-		return genespheotype;
+		return genesphenotype;
 	}
-}
 
-/*
- writing a merged class with a return interface array.
-*/
-
-export class Comparative extends PhenotypeAnalysis {
-	async comparative(
-		input1: Array<PhenotypeGenes>,
-		input2: Array<GenesPhenotype>,
-	): Promise<CombinedPhenotypeGenes[]> {
-		const inputarray1 = input1;
-		const inputarray2 = input2;
+	public async comparativephenotype(): Promise<CombinedPhenotypeGenes[]> {
+		const pheno = this.analyze();
+		const geno = this.analyzeother();
 		const returnvector: CombinedPhenotypeGenes[] = new Array();
-		for (let i = 0; i < inputarray1.length; i++) {
-			for (let j = 0; j < inputarray2.length; j++) {
-				if (inputarray1[i].hpoid === inputarray2[j].hpoid) {
+		for (const val of pheno) {
+			for (const inputval of geno) {
+				if (Number.parseInt(val.hpoid) ===
+				Number.parseInt(inputval.hpoid)) {
 					const objectreturn = {
-						hpoid: inputarray1[i].hpoid,
-						hponame: inputarray1[i].hponame,
-						ncbigeneid: inputarray1[i].ncbigeneid,
-						genesymbol: inputarray1[i].genesymbol,
-						diseaseid: inputarray1[i].diseaseid,
-						frequency: inputarray2[j].frequency,
+						hpoid: val.hpoid,
+						hponame: val.hponame,
+						ncbigeneid: val.ncbigeneid,
+						genesymbol: val.genesymbol,
+						diseaseid: val.diseaseid,
+						frequency: inputval.frequency,
 					};
 					returnvector.push(objectreturn);
 				}
@@ -91,47 +87,37 @@ export class Comparative extends PhenotypeAnalysis {
 		}
 		return returnvector;
 	}
-}
-/*
- invoking a method call as a constructor class and a method calling
- a callback function from aother clas to make
- it easier rather than reimporting.
-*/
-export class HPOA extends Comparative {
-	async getjunctionvariants(
-		value1: Phenotype[],
-		value2: CombinedPhenotypeGenes[],
-	): Promise<Combinedlastinterface> {
-		const valuephenotype = new Phenotype(this.filename_genes_hpoa);
-		const valuecombined = new this.comparative(
-			this.analyze(this.filename_phenotype_genes),
-			this.analyzeother(this.filename_genes_phenotype),
-		);
-		const returnfinal: CombinedPhenotypeGenes = new Array();
-		for (i in valuephenotype) {
-			for (val in valuecombined) {
-				if (i.hpoid === val.hpoid) {
+
+	public async getjunctionvariants(): Promise<Combinedlastinterface> {
+		const valuephenotype = new PhenotypeHPOA(this.filename_genes_hpoa);
+		const phenotypeoutput = valuephenotype.resolvefilename();
+		const valuereturn = this.comparativephenotype();
+		const returnfinal_combined: Combinedlastinterface[] = new Array();
+		for (const val of phenotypeoutput) {
+			for (const objval of valuereturn) {
+				if (Number.parseInt(val.hpoid) ===
+				Number.parseInt(objval.hpoid)) {
 					const objectreturn = {
-						databaseid: i.databaseid,
-						diseasename: i.diseasename,
-						qualifier: i.qualifier,
-						reference: i.reference,
-						evidence: i.evidence,
-						onset: i.onset,
-						sex: i.sex,
-						modifier: i.modifier,
-						aspect: i.aspect,
-						biocuration: i.biocuration,
-						hpoid: val.hpoid,
-						hponame: val.hponame,
-						ncbigene: val.ncbigene,
-						genesymbol: val.genesymbol,
-						diseaseid: val.diseaseid,
-						frequency: val.frequency,
+						databaseid: val.databaseid,
+						diseasename: val.diseasename,
+						qualifier: val.qualifier,
+						reference: val.reference,
+						evidence: val.evidence,
+						onset: val.onset,
+						sex: val.sex,
+						modifier: val.modifier,
+						aspect:val.aspect,
+						biocuration: val.biocuration,
+						hpoid: objval.hpoid,
+						hponame: objval.hponame,
+						ncbigeneid: objval.ncbigene,
+						genesymbol: objval.genesymbol,
+						diseaseid: objval.diseaseid,
+						frequency: objval.frequency,
 					};
+					returnfinal_combined.push(objectreturn);
 				}
 			}
 		}
-		return returnfinal;
-	}
+	return returnfinal_combined;
 }

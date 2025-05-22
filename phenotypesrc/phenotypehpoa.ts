@@ -9,13 +9,13 @@
 import * as fsPromise from "fs/promises";
 import type { Phenotypehpoa } from "./phenotype";
 
-export class Phenotype {
+export class PhenotypeHPOA {
 	filename: string;
 	constructor(filename: string) {
 		this.filename = filename;
 	}
-	async resolvefilename(fileiter: string): Promise<Phenotypehpoa[]> {
-		const fileread = await fsPromise.open(fileiter, "r");
+	public async resolvefilename(): Promise<Phenotypehpoa[]> {
+		const fileread = await fsPromise.open(this.filename, "r");
 		const phenotypehpoareturn: Phenotypehpoa[] = new Array();
 		for await (const line of fileread.readLines()) {
 			const linesplit = line.split("\t");
@@ -50,7 +50,8 @@ export class Phenotype {
 		}
 		return phenotypehpoareturn;
 	}
-	async getcompare(): Promise<string> {
+
+	public async getcompare(): Promise<string> {
 		return `this.databaseid + "|" + this.diseasename + "|" + this.qualifier + "|" + this.hpoid + "|" + this.reference + "|" + this.evidence + "|" + this.onset + "|" + this.frequency + "|" + this.sex + "|" + this.modifier + "|" + this.aspect + "|" + this.biocuration`;
 	}
 }

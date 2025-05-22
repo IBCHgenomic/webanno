@@ -65,9 +65,9 @@ export type CombinedPhenotypeGenes = {
 	frequency: string;
 };
 
-export type Combinedlastinfertace {
-    // Phenotype
-   	databaseid: string;
+export type Combinedlastinterface = {
+	// Phenotype
+	databaseid: string;
 	diseasename: string;
 	qualifier: string;
 	reference: string;
@@ -84,4 +84,4 @@ export type Combinedlastinfertace {
 	genesymbol: string;
 	diseaseid: string | number;
 	frequency: string;
-}
+};
